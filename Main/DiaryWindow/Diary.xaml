@@ -1,0 +1,437 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LifeInDiary.Main.DiaryWindow"
+             xmlns:win="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" 
+        xmlns:Components="clr-namespace:LifeInDiary.Libs.Components" x:Class="LifeInDiary.Main.DiaryWindow.Diary"
+        mc:Ignorable="d"
+        Title="LifeInDiary" BorderThickness="1" BorderBrush="#0a0a0a" MinHeight="450" MinWidth="600" Width="800" Height="530" Background="#FF2F2F2F" FontFamily="Roboto" Foreground="{DynamicResource HighEmpWhite}" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded" KeyDown="WindowsKeyEvents" WindowStartupLocation="CenterScreen" AutomationProperties.Name="Life In Diary" FocusVisualStyle="{DynamicResource MaterialFocusVisualStyle}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/DefaultTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid x:Name="RootGrid" Background="#FF121212">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="121*"/>
+            <RowDefinition Height="135*"/>
+        </Grid.RowDefinitions>
+        <!--#endregion-->
+        <!--#endregion-->
+        <!--#endregion-->
+        <!--#endregion-->
+        <!--#endregion-->
+        <!--#endregion-->
+        <!--#region Caption Bar-->
+        <Grid x:Name="CaptionBar" Panel.ZIndex="88" Height="25" VerticalAlignment="Top" MinWidth="20">
+            <StackPanel x:Name="CaptionBarControlsContainer" Margin="4,0,0,0" Height="25" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Image x:Name="CSThumbnailImage" Margin="0,3"/>
+                <TextBlock TextWrapping="Wrap" Text="LifeInDiary" FontFamily="Roboto" TextAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#FFAAAAAA" Margin="10,0,0,0"/>
+            </StackPanel>
+            <TextBlock x:Name="CaptionBarTitle" TextWrapping="NoWrap" TextAlignment="Center" TextTrimming="CharacterEllipsis" Text="Title" HorizontalAlignment="Center" MaxWidth="300" Foreground="{DynamicResource HighEmpWhite}" FontWeight="Bold" Padding="5,3,5,3" VerticalAlignment="Center" UseLayoutRounding="True"/>
+            <StackPanel Height="20" VerticalAlignment="Top" WindowChrome.IsHitTestVisibleInChrome="True" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button x:Name="MinimizeBtn" ToolTip="Minimize" Padding="6" Width="30" Template="{DynamicResource FlatMinimizeBtnTemplate}" RenderTransformOrigin="0.508,0.502" Background="#0CFFFFFF" Foreground="{DynamicResource HighEmpWhite}" Click="MinimizeBtnClick">
+                    <Button.FocusVisualStyle>
+                        <Style>
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Border Margin="0" BorderThickness="1" CornerRadius="0,0,0,4" BorderBrush="#000"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.FocusVisualStyle>
+                </Button>
+                <Button x:Name="MaximizeBtn" ToolTip="Maximize" Padding="6" Width="30" Template="{DynamicResource MaximizeBtnTemplate}" Background="#0CFFFFFF" Foreground="{DynamicResource HighEmpWhite}" Click="MaximizeBtnClick" FocusVisualStyle="{DynamicResource MaterialFocusVisualStyle}"/>
+                <Button x:Name="RestoreBtn" ToolTip="Restore" Padding="4" Width="30" Template="{DynamicResource FlatRestoreBtnTemplate}" Background="#0CFFFFFF" Foreground="{DynamicResource HighEmpWhite}" Click="RestoreBtnClick" FocusVisualStyle="{DynamicResource MaterialFocusVisualStyle}"/>
+                <Button x:Name="CloseBtn" ToolTip="Close" Padding="6" Width="30" Template="{DynamicResource FlatExitCaptionBtn}" Background="#0CFFFFFF" Foreground="{DynamicResource HighEmpWhite}" Click="CloseBtnClick">
+                    <Button.FocusVisualStyle>
+                        <Style>
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Border Margin="0" BorderThickness="1" CornerRadius="0,0,4,0" BorderBrush="#000"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.FocusVisualStyle>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <!--#region Content Grid-->
+        <Grid x:Name="ContentGrid" Grid.RowSpan="2" PreviewMouseLeftButtonUp="ContentGrid_PreviewMouseLeftButtonUp">
+            <Grid x:Name="HomeGrid" Margin="0,0,0,50">
+                <!--<TextBlock x:Name="DiaryBackground" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#FFFE8F5B" Padding="50" TextTrimming="WordEllipsis">
+                    -->
+                <!--<TextBlock.Effect>
+                        <BlurEffect  KernelType="Box" RenderingBias="Performance"/>
+                    </TextBlock.Effect>-->
+                <!--
+                    <Run x:Name="_DiaryBgDay" Background="#FFFF795B" Text="Monday" Foreground="{x:Null}"/><LineBreak/>
+                    <Run x:Name="_DiaryBgDate" Background="#FFFF795B" Text="29th April 2021"/><LineBreak/>
+                    <Run x:Name="_DiaryBgTime" BaselineAlignment="Top" Background="#FFFF795B" Text="3:00 PM"/><LineBreak/>
+                    <LineBreak/>
+                    <Run Background="#FFFF603F" Text="Dear Diary"/><LineBreak/>
+                    <Run Background="#FFFF603F"/><LineBreak/>
+                    <Run x:Name="_DiaryBgText" Text="Hello Diary, how are you? It was a great day today and the only thing that I need right now is a nice hot coffee." Foreground="#FF61E2FF" FontWeight="Bold" FlowDirection="LeftToRight" TextDecorations="{x:Null}"/>
+                    <LineBreak/>
+                    <LineBreak/>
+                </TextBlock>-->
+                <Grid Margin="0,0,0,0" Background="#a8121212"/>
+                <TextBlock x:Name="_HomeScreenQuote" HorizontalAlignment="Center" Text="Man seeks peace, yet at the same time yearning for war… Those are the two realms belonging solely to man. Thinking of peace whilst spilling blood is something that only humans could do. They're two sides of the same coin… to protect something… another must be sacrificed" TextWrapping="Wrap" VerticalAlignment="Center" Padding="10,20,10,20" FontFamily="Roboto Black" FontWeight="Bold" FontSize="24" TextAlignment="Center" TextTrimming="CharacterEllipsis" Foreground="#FF707070" MaxWidth="700" MaxHeight="500"/>
+            </Grid>
+            <Border x:Name="NavigationBarBorder" Panel.ZIndex="3" VerticalAlignment="Bottom" MinHeight="50" Height="50" Margin="0,0,0,0" Background="#FF292929">
+                <Grid>
+                    <Button x:Name="OpenCloseSidebarBtn" Padding="10,5" WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Center" Click="SidebarOpenCloseBtn_Click" Width="45" Height="45" Margin="0,0,0,0" HorizontalAlignment="Left" Foreground="#FF606060" ToolTip="Open side menu [Ctrl + Alt + M]">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Border CornerRadius="100" Padding="0" Background="#0000">
+                                    <Grid>
+                                        <Border x:Name="BackgroundBorder1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="0" Height="0" CornerRadius="100" Padding="0" Background="#0000"/>
+                                        <Border x:Name="BackgroundBorder2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="0" Height="0" CornerRadius="100" Padding="0" Background="#0000"/>
+                                        <Viewbox Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Path x:Name="path" Data="M0, 5 l 20, 0 M 0, 0 l 20,0 M 0, 10 l 20, 0" HorizontalAlignment="Left" VerticalAlignment="Center" StrokeThickness="3" Stroke="{DynamicResource LowEmpWhite}"/>
+                                        </Viewbox>
+                                    </Grid>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder1" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#0AFFFFFF" FillBehavior="HoldEnd"/>
+                                                    <DoubleAnimation Duration="0:0:0.1" To="45" Storyboard.TargetName="BackgroundBorder1" Storyboard.TargetProperty="Width" FillBehavior="HoldEnd"/>
+                                                    <DoubleAnimation Duration="0:0:0.1" To="45" Storyboard.TargetName="BackgroundBorder1" Storyboard.TargetProperty="Height" FillBehavior="HoldEnd"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <RemoveStoryboard BeginStoryboardName="exitCaptureSb"/>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder1" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#0000" FillBehavior="HoldEnd"/>
+                                                    <DoubleAnimation Duration="0:0:0.1" To="0" Storyboard.TargetName="BackgroundBorder1" Storyboard.TargetProperty="Width" FillBehavior="HoldEnd"/>
+                                                    <DoubleAnimation Duration="0:0:0.1" To="0" Storyboard.TargetName="BackgroundBorder1" Storyboard.TargetProperty="Height" FillBehavior="HoldEnd"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseCaptured" Value="True">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <!--Border 1-->
+                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder2" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#0AFFFFFF" FillBehavior="HoldEnd"/>
+                                                    <DoubleAnimation Duration="0:0:0.1" To="45" Storyboard.TargetName="BackgroundBorder2" Storyboard.TargetProperty="Width" FillBehavior="HoldEnd"/>
+                                                    <DoubleAnimation Duration="0:0:0.1" To="45" Storyboard.TargetName="BackgroundBorder2" Storyboard.TargetProperty="Height" FillBehavior="HoldEnd"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard x:Name="exitCaptureSb">
+                                                <Storyboard>
+                                                    <!--Border 2-->
+                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder2" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#0000" FillBehavior="HoldEnd"/>
+                                                    <DoubleAnimation Duration="0:0:0.1" To="45" Storyboard.TargetName="BackgroundBorder2" Storyboard.TargetProperty="Width" FillBehavior="HoldEnd"/>
+                                                    <DoubleAnimation Duration="0:0:0.1" To="45" Storyboard.TargetName="BackgroundBorder2" Storyboard.TargetProperty="Height" FillBehavior="HoldEnd"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+
+                        </Button.Template>
+                    </Button>
+                    <StackPanel x:Name="NB_BtnStackPanel" Margin="50,0,0,0" Orientation="Horizontal">
+                        <Button x:Name="OpenSettingsBtn" ToolTip="Open configurations [Ctrl + Alt + s]" Click="OpenSettingBtnClick" Template="{StaticResource FlatConfigButtonTemplate}" HorizontalAlignment="Center" Background="Transparent" Height="45" VerticalAlignment="Center" Padding="8" Width="45" Foreground="#B2FFFFFF" RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0" BorderBrush="{x:Null}" Grid.Column="2">
+                            <Button.FocusVisualStyle>
+                                <Style>
+                                    <Setter Property="Control.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Ellipse Margin="-3" StrokeDashArray="6" Stroke="#000">
+                                                    <Ellipse.Effect>
+                                                        <DropShadowEffect/>
+                                                    </Ellipse.Effect>
+                                                </Ellipse>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.FocusVisualStyle>
+                        </Button>
+                        <Button x:Name="NB_OpenDiaryPagesBtn" ToolTip="Open all diary pages" Click="NB_OpenDiaryPagesBtn_Click" Height="45" Width="45"  Template="{StaticResource OpenDiaryPagesBtnTemplate}" Background="#00000000" Foreground="{DynamicResource LowEmpWhite}" Padding="8">
+                            <Button.FocusVisualStyle>
+                                <Style>
+                                    <Setter Property="Control.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Ellipse Margin="-3" StrokeDashArray="6" Stroke="#000">
+                                                    <Ellipse.Effect>
+                                                        <DropShadowEffect/>
+                                                    </Ellipse.Effect>
+                                                </Ellipse>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.FocusVisualStyle>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!--#region Diary Text Editor-->
+            <Components:Editor x:Name="TextEditor" Background="#0affffff"/>
+            <!--#endregion-->
+            <Button x:Name="CreateDiaryBtn" ToolTip="Create a new diary" Content="Create a new diary" Height="80" Background="#FFFF8B5A" Template="{StaticResource WhiteRoundButtonTemplate}" VerticalAlignment="Bottom" Click="CreateNewDiaryBtn_Click" Foreground="#FF121212" Padding="16" FontSize="8" Panel.ZIndex="4" Cursor="Hand" HorizontalAlignment="Right" Width="80">
+                <Button.FocusVisualStyle>
+                    <Style>
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <Border Margin="8" BorderThickness="4" CornerRadius="100" BorderBrush="#000">
+                                        <Border.Effect>
+                                            <DropShadowEffect ShadowDepth="0" BlurRadius="10"/>
+                                        </Border.Effect>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.FocusVisualStyle>
+            </Button>
+
+        </Grid>
+        <!--#region Side Bar-->
+        <Border Padding="0,20,0,0" Panel.ZIndex="100" x:Name="SidebarBorder" CornerRadius="0,0,0,0" MinHeight="50" HorizontalAlignment="Left" Width="300" Background="#FF353535" Margin="-350,0,0,0" Grid.RowSpan="2">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" RenderingBias="Quality"/>
+            </Border.Effect>
+            <StackPanel Margin="0">
+                <Border x:Name="ProfileBorder" Height="144" CornerRadius="2,2,2,2" BorderBrush="#FF444444" BorderThickness="0,0,0,2" Padding="10,0,0,0">
+                    <Grid Margin="10">
+                        <StackPanel>
+                            <Ellipse x:Name="SB_ProfilePic" Width="50" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Fill="#FFBB86FC"/>
+                            <TextBlock x:Name="SB_UsernameLabel" Text="Test Profile" Padding="0,5,5,5" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom" MaxWidth="240" Foreground="#FFE1E1E1"/>
+                            <TextBlock x:Name="SB_UserAbout" Text="About" Padding="0,5,5,5" Foreground="{DynamicResource LowEmpWhite}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="60" TextWrapping="Wrap" MaxWidth="240"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border x:Name="DiaryPagesScrollViewerBorder" VerticalAlignment="Stretch" Margin="0,0,0,0" CornerRadius="4" Height="390">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0"/>
+                    </Border.Effect>
+                    <Grid Margin="0">
+                        <TextBlock Padding="10" TextAlignment="Center" VerticalAlignment="Top" Text="Pages"/>
+                        <ScrollViewer x:Name="DiaryPagesScrollViewer" Margin="0,30,0,0" Template="{DynamicResource DarkFlatScrollViewer}">
+                            <StackPanel Height="1000"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+        <!--#endregion-->
+        <!--#region  Settings Container-->
+        <Border x:Name="SettingsPopupBorder" Panel.ZIndex="99" MinWidth="400" MinHeight="200" Width="720" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#FF191919" CornerRadius="4" Margin="0,18,0,0" Height="477" Visibility="Collapsed" Grid.RowSpan="2">
+            <Grid Margin="0" SnapsToDevicePixels="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="289*"/>
+                </Grid.ColumnDefinitions>
+                <Button Template="{DynamicResource RoundCloseBtn}" ToolTip="Close Configuration Container (ESC)" VerticalAlignment="Top" Background="#024D4D4D" HorizontalAlignment="Right" Height="20" Width="20" Margin="0,5,5,0" Click="CloseSettingBtnClick" Padding="6" Foreground="{DynamicResource HighEmpWhite}" Grid.Column="1"/>
+                <Grid Grid.Column="0" Background="#0AFFFFFF">
+                    <!--<Border>
+                        <Grid Margin="0" VerticalAlignment="Top" Height="150">
+                            <Border VerticalAlignment="Top" HorizontalAlignment="Center" Height="100" Width="100" Margin="0,10,0,0" CornerRadius="100" Background="#FFBB86FC" MouseEnter="ProfilePic_MouseEnter" MouseLeave="ProfilePic_MouseLeave">
+                                <Border Background="#4C000000" CornerRadius="100" Opacity="0" Visibility="Collapsed">
+                                    <Button>
+
+                                    </Button>
+                                </Border>
+                            </Border>
+                            <TextBlock Text="Test Profile" Padding="10" MaxWidth="200" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </Border-->
+                    <ScrollViewer VerticalAlignment="Center" Template="{DynamicResource DarkFlatScrollViewer}">
+                        <StackPanel x:Name="SettingsNameStackPanel" Margin="10,5,0,5">
+                            <Button x:Name="StProfileBtn" Foreground="#FFAEAEAE" BorderBrush="#000" Template="{DynamicResource FlatBoxButton}" Padding="10" Content="Profile" Background="#00000000" FocusVisualStyle="{DynamicResource MaterialFocusVisualStyle}"/>
+                            <Button x:Name="StHomeBtn" Foreground="#FFAEAEAE" Template="{DynamicResource FlatBoxButton}" Content="Home" Padding="10" Background="#00000000" FocusVisualStyle="{DynamicResource MaterialFocusVisualStyle}"/>
+                            <Button x:Name="StEditorBtn" Foreground="#FFAEAEAE" Template="{DynamicResource FlatBoxButton}" Content="Diary " Padding="10" Background="#00000000" FocusVisualStyle="{DynamicResource MaterialFocusVisualStyle}"/>
+                            <Button x:Name="StSecurityBtn" Foreground="#FFAEAEAE" Template="{DynamicResource FlatBoxButton}" Content="Security" Padding="10" Background="#00000000" FocusVisualStyle="{DynamicResource MaterialFocusVisualStyle}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+                <Grid x:Name="SettingsOptionGrid" FocusVisualStyle="{x:Null}" Margin="30,30,30,30" Grid.Column="1">
+                    <Grid x:Name="_ProfileSettingsGrid" MaxWidth="800">
+                        <ScrollViewer FocusVisualStyle="{x:Null}" Template="{DynamicResource DarkFlatScrollViewer}">
+                            <StackPanel>
+                                <Grid Height="200">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="110"/>
+                                        <RowDefinition Height="100"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Border x:Name="PS_ProfilePic" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="100" Height="100" Background="#0AFFFFFF" CornerRadius="100" Focusable="True" ToolTip="Click to change profile picture">
+                                        <Button Click="OpenProfilePicDialogBoxBtn_Click">
+                                            <Button.Template>
+                                                <ControlTemplate>
+                                                    <Border x:Name="bg" CornerRadius="100" Background="#20000000"/>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="bg" Property="Background" Value="#50000000"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </Border>
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Horizontal" Grid.Row="1">
+                                        <TextBox x:Name="ST_ProfileUsernameField" FontSize="18" Padding="5" VerticalContentAlignment="Center" MaxLength="30" Background="#0CFFFFFF" TextAlignment="Center" BorderThickness="0,0,0,0" CaretBrush="{DynamicResource HighEmpWhite}" Foreground="{DynamicResource HighEmpWhite}" SelectionTextBrush="{x:Null}" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top" HorizontalAlignment="Center" Width="228" IsReadOnly="True"/>
+                                        <Button x:Name="PS_EditProfileBtn" Width="30" Template="{DynamicResource EditButtonTemplate}" Padding="3,3,1,1" Background="#0AF5F5F5" FontSize="20" BorderThickness="0,0,0,0" Foreground="{DynamicResource LowEmpWhite}" ToolTip="Click to edit username" Click="PS_EditProfileBtn_Click"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="101*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="About" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                        <TextBox x:Name="PS_AboutTextBox" Grid.Column="1" MaxLength="300" Height="30" MaxWidth="600" CaretBrush="{DynamicResource LowEmpWhite}" Foreground="{DynamicResource LowEmpWhite}" FontSize="16" VerticalContentAlignment="Center" Background="#0affffff" BorderThickness="0" VerticalAlignment="Top" GotFocus="PS_AboutTextBox_GotFocus"/>
+                                    </Grid>
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                    <Grid x:Name="_HomeSettingsGrid" Visibility="Collapsed" Opacity="0">
+                        <StackPanel VerticalAlignment="Center">
+                            <Grid Margin="30,5" Height="30">
+                                <TextBlock Text="Home screen style" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" FontWeight="Bold"/>
+                                <ComboBox x:Name="HS_HSS_ComboBox" Foreground="{DynamicResource HighEmpWhite}" Padding="8,0,0,0" HorizontalAlignment="Right" Width="100" BorderThickness="0" VerticalContentAlignment="Center" BorderBrush="{x:Null}"  Background="#222" SelectionChanged="HS_HSS_ComboBox_SelectionChanged">
+                                    <ComboBoxItem Padding="5" Content="Motivational" ToolTip="Displays motivational quotes on home screen"/>
+                                    <ComboBoxItem Padding="5" Content="Dark" ToolTip="Displays dark quotes on home screen"/>
+                                    <ComboBoxItem Padding="5" Content="None" ToolTip="Displays your written diaries on home screen"/>
+                                </ComboBox>
+                            </Grid>
+                            <Grid Margin="30,5" Height="30">
+                                <TextBlock Text="Navigation Bar Position" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" FontWeight="Bold"/>
+                                <ComboBox x:Name="HS_NavbarPos" ScrollViewer.VerticalScrollBarVisibility="Hidden" Foreground="{DynamicResource HighEmpWhite}" Padding="8,0,0,0" HorizontalAlignment="Right" Width="100" BorderThickness="0" VerticalContentAlignment="Center" BorderBrush="{x:Null}"  Background="#222" SelectionChanged="HS_NavbarPos_SelectionChanged">
+                                    <ComboBoxItem Padding="5" Content="Bottom"/>
+                                    <ComboBoxItem Padding="5" Content="Left"/>
+                                </ComboBox>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                    <Grid x:Name="_TextEditorSettingsGrid" Visibility="Collapsed" Opacity="0">
+                        <StackPanel VerticalAlignment="Center">
+                            <Grid Margin="30,5" Height="30" ToolTip="Automatically saves the text everytime a change is made">
+                                <TextBlock Text="Turn on quick save" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" FontWeight="Bold"/>
+                                <ToggleButton Template="{DynamicResource FlatToggleButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Turn on quick save" FontSize="18" IsChecked="False" BorderBrush="Black" BorderThickness="1,1,1,1" VerticalContentAlignment="Center" />
+                            </Grid>
+                            <Grid Margin="30,5" Height="30">
+                                <TextBlock Text="Diary date-time format" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" FontWeight="Bold"/>
+                                <ComboBox Foreground="{DynamicResource HighEmpWhite}" Padding="8,0,0,0" SelectedIndex="0" HorizontalAlignment="Right" Width="80" BorderThickness="0" VerticalContentAlignment="Center" BorderBrush="{x:Null}"  Background="#1aFFFFFF">
+                                    <ComboBoxItem Padding="5" Content="British"/>
+                                    <ComboBoxItem Padding="5" Content="American"/>
+                                </ComboBox>
+                            </Grid>
+                            <Grid Margin="30,5" Height="30">
+                                <TextBlock Text="Default font" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" FontWeight="Bold"/>
+                                <ToggleButton Template="{DynamicResource FlatToggleButton}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Turn on quick save" FontSize="18" IsChecked="False" BorderBrush="Black" BorderThickness="1,1,1,1" VerticalContentAlignment="Center" />
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+        <!--#endregion-->
+        <Grid x:Name="MaskingGrid" MouseLeftButtonUp="MaskingGrid_MouseLeftButtonUp" Opacity="0" Visibility="Collapsed" Panel.ZIndex="20" Background="#97000000" Grid.RowSpan="2"/>
+
+        <!--#region TipsBox-->
+        <Border x:Name="TipsBorder" Visibility="Collapsed" Opacity="0" VerticalAlignment="Top" HorizontalAlignment="Center" MinWidth="200" MinHeight="50" Padding="10" CornerRadius="4" Margin="0,40,0,0" Background="#E53C3C3C">
+            <Grid>
+                <TextBlock x:Name="TipsTextBlock" Text="Press ESC to exit" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18"/>
+            </Grid>
+        </Border>
+        <!--#endregion-->
+        <!--#region Material Message Box-->
+        <Grid x:Name="MB_MaskingGrid" Panel.ZIndex="99" Background="#4C000000" Visibility="Collapsed" Grid.RowSpan="2"/>
+        <Border x:Name="NoTitleMsgBox" Panel.ZIndex="100" CornerRadius="4" Padding="4" MinHeight="100" Background="#FF353535" MinWidth="400" VerticalAlignment="Top" HorizontalAlignment="Center" Visibility="Collapsed" Margin="0,14,0,0" Grid.Row="1">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="20"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="140*"/>
+                    <RowDefinition Height="60*"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer Template="{DynamicResource DarkFlatScrollViewer}" Grid.Row="0">
+                    <TextBlock x:Name="MB_MessageTextBlock" Text="Save Username?" FontSize="18" Padding="5,5,0,5"/>
+                </ScrollViewer>
+
+                <StackPanel HorizontalAlignment="Right" Grid.Row="1" Orientation="Horizontal">
+                    <Button x:Name="NTMB_Cancel" Content="Cancel" Width="100" Margin="0,0,10,0" Background="#14FFFFFF" Foreground="{DynamicResource HighEmpWhite}" Template="{DynamicResource DiscardButton}"/>
+                    <Button x:Name="NTMB_Confirm" Content="Confirm" Width="100" Background="{x:Null}" Template="{DynamicResource RedConfirmButton}" Foreground="{DynamicResource HighEmpWhite}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <!--#endregion-->
+        <!--#region Snack bar-->
+        <Border x:Name="SingleLine_Snackbar" Margin="0,200,0,0" CornerRadius="4" MinHeight="50" Padding="10" Width="400"  MaxWidth="500" MinWidth="400" HorizontalAlignment="Center" VerticalAlignment="Top" Background="#e4e4e4" Panel.ZIndex="999" Grid.Row="1">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="10"/>
+            </Border.Effect>
+            <TextBlock x:Name="_SLS_Text" Foreground="Black" Text="yo" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" FontSize="16"/>
+        </Border>
+        <!--#endregion-->
+        <!--#region Diary Tile Container-->
+        <Grid x:Name="DPC_MaskingGrid" Panel.ZIndex="2" Visibility="Collapsed" Opacity="0" Background="#aC000000" Grid.RowSpan="2"/>
+        <Border x:Name="DPC_Border" Panel.ZIndex="3" CornerRadius="4" Background="#232323" Width="700" Height="400" Padding="0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,25,0,0" Grid.RowSpan="2">
+            <Grid SnapsToDevicePixels="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="37*"/>
+                    <RowDefinition Height="163*"/>
+                </Grid.RowDefinitions>
+                <Button HorizontalAlignment="Right" SnapsToDevicePixels="True" VerticalAlignment="Top" Height="15" Width="15" Margin="0,5,5,0" Foreground="{StaticResource LowEmpWhite}" Click="NB_CloseDiaryPagesBtn_Click" Background="Transparent" Template="{StaticResource RoundCloseBtn}" Padding="4"/>
+                <Grid Grid.Row="0">
+                    <Button Template="{StaticResource FlatBoxButton}" Width="100" Padding="5" HorizontalAlignment="Center" Background="#0000" VerticalAlignment="Center" Foreground="{StaticResource HighEmpWhite}" Content="Create Tile"/>
+                </Grid>
+                <Grid Grid.Row="1" Margin="0,0">
+                    <ScrollViewer Name="DPC_ScrollViewer"  HorizontalAlignment="Stretch" VerticalAlignment="Top" Template="{StaticResource DarkFlatScrollViewer}" ScrollChanged="DPC_ScrollViewer_ScrollChanged">
+                        <WrapPanel x:Name="DPC_WrapPanel" HorizontalAlignment="Center">
+
+                        </WrapPanel>
+                    </ScrollViewer>
+                </Grid>
+                <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Bottom" HorizontalScrollBarVisibility="Visible" Grid.Row="1" Height="100">
+                    <TextBox x:Name="DPC_DebugTextBox" IsReadOnly="True"/>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+        <Grid Name="WindowMask" Background="#9c000000" Panel.ZIndex="9999" Opacity="0" Visibility="Collapsed" Grid.RowSpan="2"/>
+        <!--#endregion-->
+        <!--#region Page viualizer-->
+        <Grid  x:Name="PV_MaskingGrid" Panel.ZIndex="4" Visibility="Collapsed" Opacity="0" Background="#aC000000" Grid.RowSpan="2"/>
+        <Components:DiaryPageVisualizer x:Name="PageVisualizer" Background="#333" Margin="10,25,10,10" MaxWidth="800" Grid.RowSpan="2" Panel.ZIndex="5">
+            <Components:DiaryPageVisualizer.Effect>
+                <DropShadowEffect ShadowDepth="0"/>
+            </Components:DiaryPageVisualizer.Effect>
+        </Components:DiaryPageVisualizer>
+        <!--#endregion-->
+    </Grid>
+</Window>
+<!--cyanish color: #03dac6, #03dac4, #92e9dc, #d4f6f2-->
+<!-- purplish color : #cfabfd, #bb86fc, #aa67f9 -->
+<!--region white variets from high to low-->
+<!--{DynamicResource HighEmpWhite}-->
+<!--{DynamicResource LowEmpWhite}-->
+<!--#FF606060-->
+<!--#endregion-->

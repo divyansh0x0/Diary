@@ -1,0 +1,177 @@
+﻿<UserControl x:Class="LifeInDiary.Libs.Components.ColorPicker.CanvasColorPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LifeInDiary.Libs.Components.ColorPicker"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" MinWidth="240" MinHeight="240" MaxWidth="240" MaxHeight="240" d:DesignWidth="200" Background="#FF212121">
+    <Border x:Name="bg" x:FieldModifier="private"  Padding="5,5" CornerRadius="4" MouseMove="bg_MouseMove">
+        <Grid Background="#FF2C2C2C">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="193*"/>
+                <ColumnDefinition Width="37*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="163*"/>
+                <RowDefinition Height="27*"/>
+            </Grid.RowDefinitions>
+            <Border x:Name="SaturationRectBorder" ClipToBounds="True" Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" BorderBrush="Black" BorderThickness="0" >
+                <Canvas x:Name="SaturationRectCanvas" ClipToBounds="True" SnapsToDevicePixels="True" x:FieldModifier="private">
+                    <Canvas.Background>
+                        <VisualBrush TileMode="None">
+                            <VisualBrush.Visual>
+                                <Canvas Background="Black" Width="1" Height="1">
+                                    <Rectangle Width="1" Height="1">
+                                        <Rectangle.Fill>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <LinearGradientBrush.GradientStops>
+                                                    <GradientStop Color="White" Offset="0.02" />
+                                                    <GradientStop x:Name="CP_SaturationGradientCurrentColor" x:FieldModifier="private" Color="Red" Offset="0.96" />
+                                                </LinearGradientBrush.GradientStops>
+                                            </LinearGradientBrush>
+                                        </Rectangle.Fill>
+                                        <Rectangle.OpacityMask>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" ColorInterpolationMode="SRgbLinearInterpolation">
+                                                <LinearGradientBrush.GradientStops>
+                                                    <GradientStop Color="#FFFFFFFF" Offset="0.01"/>
+                                                    <GradientStop Color="Transparent" Offset="0.975"/>
+                                                </LinearGradientBrush.GradientStops>
+                                            </LinearGradientBrush>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Canvas>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Canvas.Background>
+                    <Rectangle ClipToBounds="True" x:Name="SaturationChooserRect" x:FieldModifier="private" Stroke="#C8080808" Width="12" Height="12" RadiusX="12" RadiusY="10" Stretch="Uniform">
+                        <Rectangle.Fill>
+                            <VisualBrush>
+                                <VisualBrush.Visual>
+                                    <Rectangle RadiusX="20" RadiusY="20" Stroke="#FFFBFBFB" SnapsToDevicePixels="True" StrokeThickness="1" Width="9" Height="9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Canvas>
+            </Border>
+            <Border x:Name="HueBorder" x:FieldModifier="private" Margin="0,5,5,5"  Grid.Row="0"  Grid.Column="1">
+                <Canvas x:Name="HueCanvas" ClipToBounds="True" x:FieldModifier="private" HorizontalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                    <Canvas.Background>
+                        <LinearGradientBrush ColorInterpolationMode="SRgbLinearInterpolation" EndPoint="0,1" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad">
+                            <GradientStop Color="#FF0000" Offset="0.04"/>
+                            <GradientStop Color="#FFFF00" Offset="0.18"/>
+                            <GradientStop Color="#00FF00" Offset="0.36"/>
+                            <GradientStop Color="#00FFFF" Offset="0.54"/>
+                            <GradientStop Color="#0000FF" Offset="0.72"/>
+                            <GradientStop Color="#FF00FF" Offset="0.88"/>
+                            <GradientStop Color="#FF0000" Offset="0.99"/>
+                        </LinearGradientBrush>
+                    </Canvas.Background>
+                    <Rectangle x:Name="HueChooserRect" x:FieldModifier="private" Width="32" Height="10" Canvas.Top="-5">
+                        <Rectangle.Fill>
+                            <DrawingBrush Stretch="None" AlignmentX="Right" AlignmentY="Center">
+                                <DrawingBrush.Drawing>
+                                    <GeometryDrawing Brush="#0a0a0a" Geometry="m0, 0 l -10, 5 l 10, 5z">
+                                        <GeometryDrawing.Pen>
+                                            <Pen Brush="#0a0a0a" StartLineCap="Round" LineJoin="Round"/>
+                                        </GeometryDrawing.Pen>
+
+                                    </GeometryDrawing>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </Canvas>
+            </Border>
+
+            <Grid x:Name="ControlGrid" x:FieldModifier="private" Margin="0,0,5,0" Grid.Column="0"  Grid.Row="2" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="31*"/>
+                    <ColumnDefinition Width="116*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle x:Name="SelectedColorRect" x:FieldModifier="private" Grid.Column="0" Margin="5,0,0,5" />
+                <TextBox x:Name="ColorValueTextBox" x:FieldModifier="private" IsReadOnly="True" Grid.Column="1" Padding="2,2,1,1" UseLayoutRounding="True" BorderThickness="0,0,0,0" Margin="0,0,0,5" BorderBrush="{x:Null}" Background="#14FFFFFF" VerticalContentAlignment="Center" Foreground="{DynamicResource HighEmpWhite}" FontWeight="Bold" FontFamily="Monospac821 BT"/>
+                <Button Template="{DynamicResource RedConfirmButton}" Content="Confirm" Margin="5,0,0,5" Grid.Column="2"  FontSize="10" Grid.RowSpan="2" Click="ConfirmBtnClick"/>
+            </Grid>
+        </Grid>
+    </Border>
+    <UserControl.Resources>
+        <Color x:Key="CurrentColor">#00FF00</Color>
+
+        <LinearGradientBrush x:Key="HueBrush" ColorInterpolationMode="SRgbLinearInterpolation" MappingMode="RelativeToBoundingBox" SpreadMethod="Pad" EndPoint="0,1">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Color="#FF0000" Offset="0" />
+                <GradientStop Color="#FFFF00" Offset="0.167" />
+                <GradientStop Color="#00FF00" Offset="0.333" />
+                <GradientStop Color="#00FFFF" Offset="0.5" />
+                <GradientStop Color="#0000FF" Offset="0.667" />
+                <GradientStop Color="#FF00FF" Offset="0.833" />
+                <GradientStop Color="#FF0000" Offset="1" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+
+        <VisualBrush x:Key="LevelSaturationBrush" TileMode="None">
+            <VisualBrush.Visual>
+                <Canvas Background="Black" Width="1" Height="1" SnapsToDevicePixels="True">
+                    <Rectangle Width="1" Height="1" SnapsToDevicePixels="True">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="White" Offset="0" />
+                                    <GradientStop Color="{DynamicResource CurrentColor}" Offset="1" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                        <Rectangle.OpacityMask>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                                    <GradientStop Color="#00FFFFFF" Offset="1"/>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Canvas>
+            </VisualBrush.Visual>
+        </VisualBrush>
+
+        <!--#region Confirm Button-->
+        <ControlTemplate x:Key="RedConfirmButton" TargetType="Button">
+            <Border Name="BackgroundBorder" CornerRadius="4" Padding="{TemplateBinding Padding}" Background="{DynamicResource BasicRed}">
+                <Grid>
+                    <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard x:Name="MouseOverSB">
+                            <Storyboard>
+                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FFF32241" FillBehavior="HoldEnd"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <RemoveStoryboard BeginStoryboardName="MouseOverSB"/>
+                    </Trigger.ExitActions>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard x:Name="MouseCaptureSB">
+                            <Storyboard>
+                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FFF0425B" FillBehavior="HoldEnd"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <RemoveStoryboard BeginStoryboardName="MouseCaptureSB"/>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <!--#endregion-->
+
+    </UserControl.Resources>
+</UserControl>

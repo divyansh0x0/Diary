@@ -1,0 +1,235 @@
+﻿<UserControl x:Class="LifeInDiary.Libs.Components.ImageCropper"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:local="clr-namespace:LifeInDiary.Libs.Components"
+			 mc:Ignorable="d" 
+			 d:DesignHeight="450" d:DesignWidth="450" MinHeight="300" MinWidth="300" MaxHeight="350" MaxWidth="350"
+	xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+    <Border Name="bg" x:FieldModifier="private" Padding="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="Row1" x:FieldModifier="private" Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Border Padding="0,0,0,0" Grid.Row="0" Background="#0affffff">
+                <Grid x:Name="CroppingContainer" Cursor="Hand" x:FieldModifier="private" >
+
+                    <Border x:Name="ImageBorder"   x:FieldModifier="private" Padding="0,0,0,0" ClipToBounds="True" MouseWheel="scaling_MouseWheel">
+                        <Canvas x:Name="ImageViewbox" MouseLeave="ImageViewbox_MouseLeave" MouseWheel="scaling_MouseWheel" MouseLeftButtonDown="image_MouseLeftButtonDown" MouseLeftButtonUp="image_MouseLeftButtonUp" MouseMove="image_MouseMove">
+                            <Image Canvas.Left="0" Canvas.Right="0" RenderTransformOrigin="0.5,0.5" Stretch="UniformToFill" HorizontalAlignment="Left" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="LowQuality" Margin="0,0,0,0"  x:Name="ImageToCrop" x:FieldModifier="private">
+                                <Image.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform x:Name="scaleTransform"/>
+                                        <TranslateTransform x:Name="translateTransform"/>
+                                    </TransformGroup>
+                                </Image.RenderTransform>
+                            </Image>
+                        </Canvas>
+                    </Border>
+                    <Rectangle x:Name="CropingRect" IsHitTestVisible="False" RadiusX="1000" RadiusY="1000" MaxHeight="300" MaxWidth="300" Width="260" Height="260" SnapsToDevicePixels="True" Stroke="black" x:FieldModifier="private" Margin="0,10,10,10" Fill="#3398FFEC"/>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*"/>
+                    <ColumnDefinition Width="50*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="Cancel" HorizontalAlignment="Center" Template="{DynamicResource DiscardButton}" Padding="40,0" Margin="0,9.8,0,0" Background="#39FFFFFF" Click="CloseImageCropperBtn_Click" />
+                <Button Grid.Column="1" Click="SaveCroppedImageBtn_Click" Content="Save" HorizontalAlignment="Center" Template="{DynamicResource RedConfirmButton}" Padding="40,0" Margin="0,9.8,0,0"/>
+            </Grid>
+        </Grid>
+    </Border>
+    <UserControl.Resources>
+        <!--#region Colors-->
+        <SolidColorBrush x:Key="HighEmpWhite" Color="#FFDEDEDE"/>
+        <SolidColorBrush x:Key="LowEmpWhite" Color="#FFAEAEAE"/>
+
+        <SolidColorBrush x:Key="BasicRed" Color="#FFF1304D"/>
+        <SolidColorBrush x:Key="BasicOrange" Color="#FFFF8B5A"/>
+        <!--#endregion-->
+        <!--#region Flat dark Scrollbar-->
+        <ControlTemplate x:Key="FlatDarkVerticalScrollBar" TargetType="{x:Type ScrollBar}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="0.00001*" />
+                    <RowDefinition Height="3"/>
+                </Grid.RowDefinitions>
+
+                <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="true">
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Height="0"></RepeatButton>
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb x:Name="thumb" Margin="0,0,4,0" Height="auto" MinHeight="10" Width="5" Foreground="#FF343434">
+                            <Thumb.Template>
+                                <ControlTemplate>
+                                    <Rectangle x:Name="thumbRectangle" MinHeight="0" HorizontalAlignment="Right" Width="5" Margin="0" Fill="#33FFFFFF" RadiusX="1" RadiusY="1"/>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True" >
+                                            <Setter  Property="Rectangle.Fill" TargetName="thumbRectangle" Value="#43FFFFFF"/>
+                                            <Setter  Property="Rectangle.MinWidth" TargetName="thumbRectangle" Value="10"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseCaptured" Value="True">
+                                            <Setter  Property="Rectangle.Fill" TargetName="thumbRectangle" Value="#2AFFFFFF"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+        <!--#endregion-->
+        <!--#region Flat dark Scrollbar-->
+        <ControlTemplate  x:Key="FlatDarkHorizontalScrollBar" TargetType="{x:Type ScrollBar}">
+            <Grid x:Name="Bg" Background="Transparent" SnapsToDevicePixels="true">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="0"/>
+                </Grid.ColumnDefinitions>
+                <Track x:Name="PART_Track" Orientation="Horizontal" Grid.ColumnSpan="2">
+                    <Track.Thumb>
+                        <Thumb Margin="0,2.5,0,0">
+                            <Thumb.Template>
+                                <ControlTemplate>
+                                    <Rectangle Name="thumbRectangle" Height="5" RadiusX="1" RadiusY="1" VerticalAlignment="Top" Fill="#33FFFFFF"/>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True" >
+                                            <Setter  Property="Rectangle.Fill" TargetName="thumbRectangle" Value="#43FFFFFF"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseCaptured" Value="True">
+                                            <Setter  Property="Rectangle.Fill" TargetName="thumbRectangle" Value="#2AFFFFFF"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
+                    </Track.Thumb>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+        <!--#endregion-->
+        <!--#region Flat Dark Scroll viewer-->
+        <ControlTemplate x:Key="DarkFlatScrollViewer" TargetType="{x:Type ScrollViewer}">
+            <Grid Background="{TemplateBinding Background}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10"/>
+                </Grid.RowDefinitions>
+                <ScrollBar 
+					x:Name="PART_VerticalScrollBar"
+					Grid.Column="1"
+					Minimum="0.0"
+					Maximum="{TemplateBinding ScrollableHeight}"
+					ViewportSize="{TemplateBinding ViewportHeight}"
+					Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=VerticalOffset, Mode=OneWay}"
+					Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"         
+					Cursor="Arrow"
+					MaxWidth="5"
+					AutomationProperties.AutomationId="VerticalScrollBar"
+					Template="{StaticResource FlatDarkVerticalScrollBar}"/>
+                <ScrollBar Template="{DynamicResource FlatDarkHorizontalScrollBar}" 
+					x:Name="PART_HorizontalScrollBar"
+					Orientation="Horizontal"
+					Grid.Row="1"
+					Minimum="0.5"
+					Maximum="{TemplateBinding ScrollableWidth}"
+					ViewportSize="{TemplateBinding ViewportWidth}"
+					Value ="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=HorizontalOffset, Mode=OneWay}"
+					Visibility="Visible"
+					Cursor="Arrow"
+					AutomationProperties.AutomationId="HorizontalScrollBar"/>
+                <ScrollContentPresenter 
+					x:Name="PART_ScrollContentPresenter"
+					Margin="{TemplateBinding Padding}"
+					Content="{TemplateBinding Content}"
+					ContentTemplate="{TemplateBinding ContentTemplate}"
+					CanContentScroll="{TemplateBinding CanContentScroll}"/>
+            </Grid>
+        </ControlTemplate>
+        <!--#endregion-->
+        <!--#region Confirm Button-->
+        <ControlTemplate x:Key="RedConfirmButton" TargetType="Button">
+            <Border Name="BackgroundBorder" CornerRadius="4" Padding="{TemplateBinding Padding}" Background="{DynamicResource BasicRed}">
+                <Grid>
+                    <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard x:Name="MouseOverSB">
+                            <Storyboard>
+                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FFF32241" FillBehavior="HoldEnd"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <RemoveStoryboard BeginStoryboardName="MouseOverSB"/>
+                    </Trigger.ExitActions>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard x:Name="MouseCaptureSB">
+                            <Storyboard>
+                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#FFF0425B" FillBehavior="HoldEnd"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <RemoveStoryboard BeginStoryboardName="MouseCaptureSB"/>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <!--#endregion-->
+        <!--#region Discard Button-->
+        <ControlTemplate x:Key="DiscardButton" TargetType="Button">
+            <Border x:Name="BackgroundBorder" CornerRadius="4" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                <Grid>
+                    <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#29FFFFFF" FillBehavior="HoldEnd"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#14FFFFFF" FillBehavior="HoldEnd"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard x:Name="MouseOverSB">
+                            <Storyboard>
+                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetName="BackgroundBorder" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#2EFFFFFF" FillBehavior="HoldEnd"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <RemoveStoryboard BeginStoryboardName="MouseOverSB"/>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <!--#endregion-->
+    </UserControl.Resources>
+</UserControl>

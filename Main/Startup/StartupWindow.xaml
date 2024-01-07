@@ -1,0 +1,46 @@
+﻿<Window x:Class="LifeInDiary.Main.Startup.StartupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LifeInDiary.Main.Startup"
+        mc:Ignorable="d"
+        Title="Life In Diary" Height="400" Width="300" ResizeMode="NoResize" Background="{x:Null}" Foreground="#FFBDDDFC" AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen">
+    <Border BorderBrush="#000" BorderThickness="1" CornerRadius="5" Margin="10" Background="#FF121212">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="0" BlurRadius="15" Color="#FF121212"/>
+        </Border.Effect>
+        <Grid Loaded="WindowLoaded" Margin="5">
+            <TextBlock Text="Loading" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="20" Margin="0,0,0,34" TextAlignment="Center" TextDecorations="{x:Null}" FontWeight="Bold" FontStyle="Italic"/>
+            <Viewbox VerticalAlignment="Bottom" Width="80" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" Margin="0,0,0,25">
+                <Canvas Name="svg8" Width="128" Height="6">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="0" Y="0"/>
+                    </Canvas.RenderTransform>
+                    <Canvas.Resources/>
+                    <!--Unknown tag: metadata-->
+                    <!--Unknown tag: sodipodi:namedview-->
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path2" Fill="#bdddfc">
+                        <Path.Data>
+                            <PathGeometry Figures="M3.034 0.054H8.081A2.973 2.973 0 1 1 8.081 6H3.034A2.973 2.973 0 1 1 3.034.054Zm14.6 0h5.047a2.973 2.973 0 1 1 0 5.946H17.638A2.973 2.973 0 1 1 17.638.054Zm14.6 0h5.047a2.973 2.973 0 1 1 0 5.946H32.242A2.973 2.973 0 1 1 32.242.054Zm14.6 0h5.047a2.973 2.973 0 1 1 0 5.946H46.846A2.973 2.973 0 1 1 46.846.054Zm14.6 0H66.5A2.973 2.973 0 1 1 66.5 6H61.45A2.973 2.973 0 1 1 61.45.054Zm14.6 0H81.1A2.973 2.973 0 1 1 81.1 6H76.054A2.973 2.973 0 1 1 76.054.054Zm14.6 0H95.7A2.973 2.973 0 1 1 95.7 6H90.658A2.973 2.973 0 1 1 90.658.054Zm14.6 0h5.047a2.973 2.973 0 1 1 0 5.946h-5.047A2.973 2.973 0 1 1 105.262.054Zm14.6 0h5.047a2.973 2.973 0 1 1 0 5.946h-5.047A2.973 2.973 0 1 1 119.866.054Z" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                    <Canvas>
+                        <Path Margin="-30,0,0,0" x:Name="movingBlock" Canvas.Top="3" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Data="M0 0 L 20 0" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Stroke="#121212" StrokeThickness="10">
+                            <Path.Triggers>
+                                <EventTrigger RoutedEvent="Window.Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation From="0" To="170,0,0,0" Storyboard.TargetName="movingBlock" Storyboard.TargetProperty="Margin" RepeatBehavior="Forever" Duration="0:0:0.5"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Path.Triggers>
+                        </Path>
+                        <!--Unknown tag: animateTransform-->
+                    </Canvas>
+                </Canvas>
+            </Viewbox>
+        </Grid>
+    </Border>
+</Window>

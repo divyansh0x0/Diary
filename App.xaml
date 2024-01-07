@@ -1,0 +1,177 @@
+﻿<Application x:Class="LifeInDiary.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:LifeInDiary"
+             xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+             StartupUri="Main/Startup/StartupWindow.xaml">
+    <!--StartupUri="Main/Configuration/ConfigurationWindow.xaml"-->
+    <!--StartupUri="Main/Startup/StartupWindow.xaml"-->
+    <!--StartupUri="Main/DiaryWindow/Diary.xaml"-->
+    <Application.Resources>
+        <!--#region Colors-->
+        <SolidColorBrush x:Key="HighEmpWhite" Color="#FFDEDEDE"/>
+        <SolidColorBrush x:Key="LowEmpWhite" Color="#FFAEAEAE"/>
+        <SolidColorBrush x:Key="DisabledWhite" Color="#54FFFFFF"/>
+        
+        <SolidColorBrush x:Key="BasicRed" Color="#FFF1304D"/>
+        <SolidColorBrush x:Key="BasicOrange" Color="#FFFF8B5A"/>
+        <!--#endregion-->
+        <!--#region Text box style-->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Name="Bd" BorderThickness="{TemplateBinding BorderThickness}" 
+                                             BorderBrush="{TemplateBinding BorderBrush}" 
+                                             Background="{TemplateBinding Background}" 
+                                             SnapsToDevicePixels="true">
+                            <ScrollViewer Name="PART_ContentHost" Background="{TemplateBinding Background}" 
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Value="{StaticResource DisabledWhite}" Property="Foreground" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--#endregion-->
+        <!--#region Rich text box style-->
+        <Style TargetType="RichTextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RichTextBox">
+                        <Border Name="Bd" BorderThickness="{TemplateBinding BorderThickness}" 
+                                             BorderBrush="{TemplateBinding BorderBrush}" 
+                                             Background="{TemplateBinding Background}" 
+                                             SnapsToDevicePixels="true">
+                            <ScrollViewer Name="PART_ContentHost" Background="{TemplateBinding Background}" 
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Value="{StaticResource DisabledWhite}" Property="Foreground" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+        <!--#region Flat ComboBox -->
+        <!--#region Flat EXIT caption button template-->
+        <ControlTemplate x:Key="FlatExitCaptionBtn" TargetType="{x:Type Button}">
+            <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
+                <Border x:Name="BackgroundBorder" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}" VerticalAlignment="Stretch" CornerRadius="0,0,4,0"></Border>
+                <Viewbox Margin="{TemplateBinding Padding}">
+                    <Path Data="M 0, 0 l 10,10 M 10, 0 l -10, 10" Stroke="{TemplateBinding Foreground}" StrokeThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Viewbox>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True" >
+                    <Setter  Property="Border.Background" TargetName="BackgroundBorder" Value="#ff4040"/>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Border.Background" TargetName="BackgroundBorder" Value="#ff1010"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <!--#endregion-->
+        <!--#region Flat Maximize button template-->
+        <ControlTemplate x:Key="MaximizeBtnTemplate" TargetType="{x:Type Button}">
+            <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="{TemplateBinding Background}">
+                <Rectangle Uid="rectangle" x:Name="rectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <Viewbox Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                    <Path Data="M 1, 1 l 0,10 l 10, 0 l 0,-10 z" SnapsToDevicePixels="True" ClipToBounds="True" Stroke="{TemplateBinding Foreground}" StrokeThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Viewbox>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True" >
+                    <Setter  Property="Rectangle.Fill" TargetName="rectangle" Value="#222"/>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Rectangle.Fill" TargetName="rectangle" Value="#1a1a1a"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <!--#endregion-->
+        <!--#region Flat restore button template-->
+        <ControlTemplate x:Key="FlatRestoreBtnTemplate" TargetType="{x:Type Button}">
+            <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="{TemplateBinding Background}">
+                <Rectangle Uid="rectangle" x:Name="rectangle" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <Viewbox Margin="{TemplateBinding Padding}">
+                    <Path Data="M 1, 3 l 0,10 l 10, 0 l 0,-10 z  M 3,3 l 0, -2 l 10, 0 l 0, 10 l -2, 0" ClipToBounds="True" Stroke="{TemplateBinding Foreground}" Margin="2" StrokeThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Viewbox>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True" >
+                    <Setter  Property="Rectangle.Fill" TargetName="rectangle" Value="#222"/>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Rectangle.Fill" TargetName="rectangle" Value="#1a1a1a"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <!--#endregion-->
+        <!--#region Flat Minimize button template-->
+        <ControlTemplate x:Key="FlatMinimizeBtnTemplate" TargetType="{x:Type Button}">
+            <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" >
+                <Border x:Name="BackgroundBorder" HorizontalAlignment="Stretch" Background="{TemplateBinding Background}" VerticalAlignment="Stretch" CornerRadius="0,0,0,4"></Border>
+                <Viewbox Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                    <Path Data="M 0, 5 l 5,0" Stroke="{TemplateBinding Foreground}" StrokeThickness="0.5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Viewbox>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True" >
+                    <Setter  Property="Border.Background" TargetName="BackgroundBorder" Value="#222"/>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Border.Background" TargetName="BackgroundBorder" Value="#1a1a1a"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <!--#endregion-->
+        <!--#region Flat Progress Bar-->
+        <Style x:Key="FlatProgressBar" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Foreground" Value="#01D328"/>
+            <Setter Property="Background" Value="#eee"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid x:Name="TemplateRoot" SnapsToDevicePixels="false">
+                            <Rectangle Fill="{TemplateBinding Background}" RadiusX="10" RadiusY="10"/>
+                            <Border Background="{TemplateBinding Background}" CornerRadius="10" Margin="1"/>
+                            <Rectangle x:Name="PART_Track" Margin="1" RadiusX="10" RadiusY="10"/>
+                            <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left" Margin="1" ClipToBounds="True">
+                                <Grid x:Name="Foreground">
+                                    <Rectangle x:Name="Indicator" Fill="{TemplateBinding Foreground}" Opacity="0.6" RadiusX="10" RadiusY="10"/>
+                                </Grid>
+                            </Decorator>
+                            <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="10"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Orientation" Value="Vertical">
+                                <Setter Property="LayoutTransform" TargetName="TemplateRoot">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="-90"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!--#endregion-->
+
+    </Application.Resources>
+</Application>

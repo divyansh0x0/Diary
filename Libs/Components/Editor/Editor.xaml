@@ -1,0 +1,604 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LifeInDiary.Libs.Components" xmlns:ColorPicker="clr-namespace:LifeInDiary.Libs.Components.ColorPicker"
+             xmlns:win="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" 
+             x:Class="LifeInDiary.Libs.Components.Editor"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" MaxWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+
+            <ControlTemplate TargetType="{x:Type ToggleButton}" x:Key="ComboBoxToggleButtonTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.ColumnSpan="2" x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="0" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" />
+                    <Border Grid.Column="1" Margin="1, 1, 1, 1" BorderBrush="#444" x:Name="ButtonBorder" CornerRadius="0, 0, 0, 0" BorderThickness="0, 0, 0, 0"/>
+                    <Path x:Name="Arrow" Grid.Column="1" Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" Fill="#FFAEAEAE" VerticalAlignment="Center">
+                        <Path.RenderTransform>
+                            <RotateTransform x:Name="arrowAngle" Angle="0"/>
+                        </Path.RenderTransform>
+                    </Path>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="#05ffffff"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="Border" To="#FFDEDEDE" Duration="0:0:0.1" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="Border" To="#FFAEAEAE" Duration="0:0:0.1" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="Border" To="#FFDEDEDE" Duration="0:0:0.1" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="Border" To="#FFAEAEAE" Duration="0:0:0.1" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsFocused" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="Border" To="#FFDEDEDE" Duration="0:0:0.1" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="Border" To="#FFAEAEAE" Duration="0:0:0.1" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="arrowAngle" To="180" Duration="0:0:0.1" Storyboard.TargetProperty="Angle"/>
+                                    <ColorAnimation Storyboard.TargetName="Arrow" To="#FFDEDEDE" Duration="0:0:0.1" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="arrowAngle" To="0" Duration="0:0:0.1" Storyboard.TargetProperty="Angle"/>
+                                    <ColorAnimation Storyboard.TargetName="Arrow" To="#FFAEAEAE" Duration="0:0:0.1" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <!--<Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter Property="Panel.Background" TargetName="Border" Value="{StaticResource ComboBoxDisabledBackgroundBrush}"/>
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource ComboBoxDisabledBackgroundBrush}"/>
+                <Setter Property="Border.BorderBrush" TargetName="ButtonBorder" Value="{StaticResource ComboBoxDisabledBorderBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{StaticResource ComboBoxDisabledForegroundBrush}"/>
+                <Setter Property="Shape.Fill" TargetName="Arrow" Value="#999"/>
+            </Trigger>-->
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <Style TargetType="{x:Type ComboBox}">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+                <Setter Property="TextElement.Foreground" Value="Black"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ComboBox}">
+                            <Grid>
+                                <ToggleButton x:Name="ToggleButton" BorderThickness="{TemplateBinding BorderThickness}" Grid.Column="2" ClickMode="Press" Focusable="False" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Background="{TemplateBinding Background}" Template="{StaticResource ComboBoxToggleButtonTemplate}"/>
+                                <ContentPresenter x:Name="ContentSite" Margin="5, 3, 23, 3" IsHitTestVisible="False" HorizontalAlignment="Left" VerticalAlignment="Center" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
+                                <TextBox x:Name="PART_EditableTextBox" ClipToBounds="True" FontFamily="{TemplateBinding FontFamily}" CaretBrush="{TemplateBinding Foreground}" Margin="0,0,20,0" Foreground="{TemplateBinding Foreground}"  IsReadOnly="{TemplateBinding IsReadOnly}" Visibility="Hidden" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Center" Focusable="True" >
+                                    <TextBox.Template>
+                                        <ControlTemplate TargetType="{x:Type TextBox}" >
+                                            <Border x:Name="PART_ContentHost" Focusable="False" />
+                                        </ControlTemplate>
+                                    </TextBox.Template>
+                                </TextBox>
+                                <!-- Popup showing items -->
+                                <Popup x:Name="Popup" MaxWidth="{TemplateBinding MaxWidth}" Placement="Bottom" Focusable="False" AllowsTransparency="True" IsOpen="{TemplateBinding IsDropDownOpen}" PopupAnimation="Slide">
+                                    <Grid x:Name="DropDown" Margin="0" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                        <win:SystemDropShadowChrome Color="#000" Margin="-5,-5,5,5" CornerRadius="0,0,4,4" />
+                                        <Border x:Name="DropDownBorder" Background="{TemplateBinding Background}"  Margin="5,5,5,5" CornerRadius="0,0,5,5">
+
+                                            <ScrollViewer Margin="0,0,-10,0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden" ScrollViewer.PanningMode="VerticalOnly" ScrollViewer.IsDeferredScrollingEnabled="False" ScrollViewer.PanningDeceleration="1" SnapsToDevicePixels="True" Template="{DynamicResource DarkFlatScrollViewer}">
+                                                <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" MaxWidth="{TemplateBinding MaxWidth}" ClipToBounds="True"/>
+                                            </ScrollViewer>
+                                        </Border>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="HasItems" Value="False">
+                                    <Setter Property="MinHeight" TargetName="DropDownBorder" Value="95"/>
+                                </Trigger>
+                                <Trigger Property="IsGrouping" Value="True">
+                                    <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                                </Trigger>
+                                <Trigger Property="IsEditable" Value="True">
+                                    <Setter Property="KeyboardNavigation.IsTabStop" Value="False"/>
+                                    <Setter Property="Visibility" TargetName="PART_EditableTextBox" Value="Visible"/>
+                                    <Setter Property="Visibility" TargetName="ContentSite" Value="Hidden"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!--#region Flat dark Scrollbar-->
+            <ControlTemplate x:Key="FlatDarkVerticalScrollBar" TargetType="{x:Type ScrollBar}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3"/>
+                        <RowDefinition Height="0.00001*" />
+                        <RowDefinition Height="3"/>
+                    </Grid.RowDefinitions>
+
+                    <Track x:Name="PART_Track" Grid.Row="1" IsDirectionReversed="true">
+                        <Track.DecreaseRepeatButton>
+                            <RepeatButton Height="0"/>
+                        </Track.DecreaseRepeatButton>
+                        <Track.Thumb>
+                            <Thumb x:Name="thumb" Margin="0,0,4,0" Height="auto" MinHeight="10" Width="5" Foreground="#FF343434">
+                                <Thumb.Template>
+                                    <ControlTemplate>
+                                        <Rectangle x:Name="thumbRectangle" MinHeight="0" HorizontalAlignment="Right" Width="5" Margin="0" Fill="#33FFFFFF" RadiusX="1" RadiusY="1"/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True" >
+                                                <Setter  Property="Fill" TargetName="thumbRectangle" Value="#43FFFFFF"/>
+                                                <Setter  Property="MinWidth" TargetName="thumbRectangle" Value="10"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseCaptured" Value="True">
+                                                <Setter  Property="Fill" TargetName="thumbRectangle" Value="#2AFFFFFF"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Thumb.Template>
+                            </Thumb>
+                        </Track.Thumb>
+                    </Track>
+                </Grid>
+            </ControlTemplate>
+            <!--#endregion-->
+            <!--#region Flat Dark Scroll viewer-->
+            <ControlTemplate x:Key="DarkFlatScrollViewer" TargetType="{x:Type ScrollViewer}">
+                <Grid Background="{TemplateBinding Background}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <ScrollBar 
+					x:Name="PART_VerticalScrollBar"
+					Grid.Column="1"
+					Minimum="0.0"
+					Maximum="{TemplateBinding ScrollableHeight}"
+					ViewportSize="{TemplateBinding ViewportHeight}"
+					Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+					Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"         
+					Cursor="Arrow"
+                    MaxWidth="10"
+					AutomationProperties.AutomationId="VerticalScrollBar"
+					Template="{StaticResource FlatDarkVerticalScrollBar}"/>
+                    <ScrollBar 
+					x:Name="PART_HorizontalScrollBar"
+					Orientation="Horizontal"
+					Grid.Row="1"
+					Minimum="0.0"
+					Maximum="{TemplateBinding ScrollableWidth}"
+					ViewportSize="{TemplateBinding ViewportWidth}"
+					Value ="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+					Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+					Cursor="Arrow"
+					AutomationProperties.AutomationId="HorizontalScrollBar" Template="{StaticResource FlatDarkVerticalScrollBar}"/>
+                    <ScrollContentPresenter 
+					x:Name="PART_ScrollContentPresenter"
+					Margin="{TemplateBinding Padding}"
+					Content="{TemplateBinding Content}"
+					ContentTemplate="{TemplateBinding ContentTemplate}"
+					CanContentScroll="{TemplateBinding CanContentScroll}"/>
+                    <Rectangle 
+					x:Name="Corner"
+					Grid.Column="1"
+					Grid.Row="1"
+					Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                </Grid>
+            </ControlTemplate>
+            <!--#endregion-->
+            <!--#region  Distraction free mode btn-->
+            <ControlTemplate x:Key="DistractionFreeModeBtnTemplate" TargetType="{x:Type Button}">
+                <Border ToolTip="Enter Distraction Free Mode (Ctrl + D)" CornerRadius="3,3,0,0">
+                    <Grid>
+                        <Path  x:Name="bg" Data="M14,2 L60,2 40,30 2, 30 L 14, 2" StrokeThickness="2" Stroke="{TemplateBinding Background}" Fill="{TemplateBinding Background}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                        <Viewbox Stretch="Uniform" Margin="14,5,4,0">
+                            <Canvas x:Name="svg8" Width="210" Height="210">
+                                <Canvas.RenderTransform>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </Canvas.RenderTransform>
+                                <Canvas x:Name="layer1">
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path841" StrokeThickness="6.119" Stroke="{DynamicResource HighEmpWhite}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M 77.863093 30.994048 H 26.836309 v 48.380951 -0.377976" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path8415" StrokeThickness="6.119" Stroke="{DynamicResource HighEmpWhite}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="m 180.00112 81.378014 0.0112 -51.026779 -48.38095 -0.01058 0.37798 5.9e-5" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path8413" StrokeThickness="6.119" Stroke="{DynamicResource HighEmpWhite}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="m 26.759635 106.66666 0.0046 51.02678 48.38095 -0.004 -0.37798 -1e-4" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path8418" StrokeThickness="6.119" Stroke="{DynamicResource HighEmpWhite}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="m 128.2554 157.72343 51.02677 0.006 0.006 -48.38095 2e-5 0.37798" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                    <Ellipse xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="80.2" Width="42.6" Canvas.Top="72.9" Height="43.1" x:Name="path883" StrokeThickness="4.74145" Stroke="{DynamicResource HighEmpWhite}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                    <Ellipse xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="90.8" Width="20.7" Canvas.Top="83.4" Height="21" x:Name="path885" Fill="{DynamicResource HighEmpWhite}" StrokeThickness="6.11899" Stroke="#FFC5C5C5" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path8870" StrokeThickness="5" Stroke="{DynamicResource HighEmpWhite}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M 71.17549 93.758103 H 51.873349" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path88701" StrokeThickness="5" Stroke="{DynamicResource HighEmpWhite}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M 150.50543 93.595233 H 131.20329" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path887013" StrokeThickness="5" Stroke="{DynamicResource HighEmpWhite}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M 101.34869 144.59804 V 125.2959" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path8870136" StrokeThickness="5" Stroke="{DynamicResource HighEmpWhite}" StrokeMiterLimit="4" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                        <Path.Data>
+                                            <PathGeometry Figures="M 101.09866 63.925007 101.2295 44.623311" FillRule="NonZero"/>
+                                        </Path.Data>
+                                    </Path>
+                                </Canvas>
+                            </Canvas>
+                        </Viewbox>
+                    </Grid>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseCaptured" Value="True">
+                        <Setter TargetName="bg" Property="Fill" Value="#58000000"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--#endregion-->
+            <!--#region Save Toggle Button template-->
+            <ControlTemplate x:Key="SaveFileBtn" TargetType="{x:Type Button}">
+                <Border CornerRadius="0,0,0,0" MaxWidth="100" Background="#161616">
+                    <Grid>
+                        <Image Opacity="0.70" Margin="{TemplateBinding Padding}" Initialized="Image_Initialized"/>
+                        <Rectangle x:Name="rect" Fill="{StaticResource HighEmpWhite}" Height="3" ClipToBounds="True" Width="0" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="5" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsMouseCaptured" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard x:Name="sb">
+                                <Storyboard>
+                                    <DoubleAnimation To="10" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width">
+                                        <DoubleAnimation.EasingFunction>
+                                            <CircleEase EasingMode="EaseInOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <RemoveStoryboard BeginStoryboardName="sb"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--#endregion-->
+            <!--#region Bold Toggle Button template-->
+            <ControlTemplate x:Key="BoldTextToggleBtn" TargetType="{x:Type ToggleButton}">
+                <Border CornerRadius="0,0,0,0"  Background="{TemplateBinding Background}">
+                    <Grid>
+                        <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="{TemplateBinding Padding}" Height="{TemplateBinding FontSize}" Width="{TemplateBinding FontSize}">
+                            <Path  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path" Fill="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Path.Data>
+                                    <PathGeometry Figures="m 0 0 a 8.3602683 8.3602683 0 0 0 1.8501 -4.46883 c 0.50561 -5.22851 -3.59684 -9.64777 -8.7076 -9.64777 h -13.6656 a 1.0964305 1.0964305 0 0 0 -1.09649 1.09649 v 3.28908 a 1.0964305 1.0964305 0 0 0 1.09649 1.09648 h 2.1838 v 19.73591 h -2.1838 a 1.0964305 1.0964305 0 0 0 -1.09649 1.09649 v 3.28908 a 1.0964305 1.0964305 0 0 0 1.09649 1.09647 h 14.34407 c 4.85152 0 9.19193 -3.54629 9.66209 -8.38772 0.32476 -3.31993 -1.12311 -6.3086 -3.48306 -8.19568 z m -12.87163 -8.63455 h 6.01413 a 3.2892861 3.2892861 0 0 1 0 6.57851 h -6.01413 z m 6.01413 19.73591 h -6.01413 v -7.675 h 6.01413 a 3.8375 3.8375 0 0 1 0 7.675 z" FillRule="NonZero"/>
+                                </Path.Data>
+                            </Path>
+                        </Viewbox>
+                        <Rectangle x:Name="rect" Fill="{StaticResource HighEmpWhite}" Height="3" ClipToBounds="True" Width="0" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="5" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard x:Name="sb0">
+                                <Storyboard>
+                                    <ColorAnimation To="#DDFFFFFF" Duration="0:0:0.2" Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <RemoveStoryboard BeginStoryboardName="sb0"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="100" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard x:Name="sb1">
+                                <Storyboard>
+                                    <DoubleAnimation To="100" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                    <ColorAnimation To="#DDFFFFFF" Duration="0:0:0.2" Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <RemoveStoryboard BeginStoryboardName="sb1"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard x:Name="sb">
+                                <Storyboard>
+                                    <ColorAnimation To="#4CFFFFFF" Duration="0:0:0.2" Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <RemoveStoryboard BeginStoryboardName="sb"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--#endregion-->
+            <!--#region Italic toggle button-->
+            <ControlTemplate x:Key="ToggleItalicBtn" TargetType="{x:Type ToggleButton}">
+                <Border CornerRadius="0,0,0,0"  Background="{TemplateBinding Background}">
+                    <Grid>
+                        <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="{TemplateBinding Padding}" Height="{TemplateBinding FontSize}" Width="{TemplateBinding FontSize}">
+                            <Path  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path" Fill="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Path.Data>
+                                    <PathGeometry Figures="M320 48v32a16 16 0 0 1-16 16h-62.76l-80 320H208a16 16 0 0 1 16 16v32a16 16 0 0 1-16 16H16a16 16 0 0 1-16-16v-32a16 16 0 0 1 16-16h62.76l80-320H112a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h192a16 16 0 0 1 16 16z" FillRule="NonZero"/>
+                                </Path.Data>
+                            </Path>
+                        </Viewbox>
+                        <Rectangle x:Name="rect" Fill="{StaticResource HighEmpWhite}" Height="3" ClipToBounds="True" Width="0" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="5" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard x:Name="sb0">
+                                <Storyboard>
+                                    <ColorAnimation To="#DDFFFFFF" Duration="0:0:0.2" Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <RemoveStoryboard BeginStoryboardName="sb0"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard x:Name="sb1">
+                                <Storyboard>
+                                    <DoubleAnimation To="100" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                    <ColorAnimation To="#DDFFFFFF" Duration="0:0:0.2" Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <RemoveStoryboard BeginStoryboardName="sb1"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard x:Name="sb">
+                                <Storyboard>
+                                    <ColorAnimation To="#4CFFFFFF" Duration="0:0:0.2" Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <RemoveStoryboard BeginStoryboardName="sb"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--#endregion-->
+            <!--#region Underline toggle button-->
+            <ControlTemplate x:Key="ToggleUnderlineBtn" TargetType="{x:Type ToggleButton}">
+                <Border CornerRadius="0,0,0,0"  Background="{TemplateBinding Background}">
+                    <Grid>
+                        <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="{TemplateBinding Padding}" Height="{TemplateBinding FontSize}" Width="{TemplateBinding FontSize}">
+                            <Path  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="path" Fill="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Path.Data>
+                                    <PathGeometry Figures="M32,64 L64,64 64,224 C64,312.22 135.78,384 224,384 312.22,384 384,312.22 384,224 L384,64 416,64 A0,0,0,0,0,432,48 L432,16 A0,0,0,0,0,416,0 L272,0 A0,0,0,0,0,256,16 L256,48 A0,0,0,0,0,272,64 L304,64 304,224 A0,0,0,0,0,144,224 L144,64 176,64 A0,0,0,0,0,192,48 L192,16 A0,0,0,0,0,176,0 L32,0 A0,0,0,0,0,16,16 L16,48 A0,0,0,0,0,32,64 z M432,448 L16,448 A0,0,0,0,0,0,464 L0,496 A0,0,0,0,0,16,512 L432,512 A0,0,0,0,0,448,496 L448,464 A0,0,0,0,0,432,448 z" FillRule="NonZero"/>
+                                </Path.Data>
+                            </Path>
+                        </Viewbox>
+                        <Rectangle x:Name="rect" Fill="{StaticResource HighEmpWhite}" Height="3" ClipToBounds="True" Width="0" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="5" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard x:Name="sb0">
+                                <Storyboard>
+                                    <ColorAnimation To="#DDFFFFFF" Duration="0:0:0.2" Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <RemoveStoryboard BeginStoryboardName="sb0"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard x:Name="sb1">
+                                <Storyboard>
+                                    <DoubleAnimation To="100" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                    <ColorAnimation To="#DDFFFFFF" Duration="0:0:0.2" Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="rect" Storyboard.TargetProperty="Width"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <RemoveStoryboard BeginStoryboardName="sb1"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Trigger.EnterActions>
+                            <BeginStoryboard x:Name="sb">
+                                <Storyboard>
+                                    <ColorAnimation To="#4CFFFFFF" Duration="0:0:0.2" Storyboard.TargetName="path" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </Trigger.EnterActions>
+                        <Trigger.ExitActions>
+                            <RemoveStoryboard BeginStoryboardName="sb"/>
+                        </Trigger.ExitActions>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+            <!--#endregion-->
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border x:Name="TextEditorBorder"  x:FieldModifier="private" CornerRadius="4">
+        <Grid x:Name="TextEditorGrid" x:FieldModifier="private" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="85"/>
+                <RowDefinition Height="331*"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel x:Name="Header"  x:FieldModifier="private"  Grid.Row="0">
+                <TextBox x:Name="TE_DiaryPageName" x:FieldModifier="private" Focusable="True" MaxLength="100" Text="Heading" FontSize="30" CaretBrush="#fff" Background="Transparent" Foreground="#fff" HorizontalContentAlignment="Center" Padding="10" BorderThickness="0,0,0,0" BorderBrush="{x:Null}"/>
+                <Grid>
+                    <TextBox x:Name="DiaryPageHeaderTextBox" x:FieldModifier="private"  BorderThickness="0" Background="{x:Null}" Cursor="Arrow" IsReadOnly="True" Focusable="True" Foreground="#7FFFFFFF" FontSize="16" Text="Day, Date, Time" TextWrapping="Wrap" Padding="1,0,1,6"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <ComboBox Name="TE_FontSizeComboBox"  x:FieldModifier="private"  IsTextSearchEnabled="False" PreviewTextInput="TE_FontSizeComboBox_PreviewTextInput" IsEditable="True" ToolTip="Font Size" TextBoxBase.TextChanged="TE_FontSizeComboBox_TextChanged" SelectionChanged="TE_FontSizeComboBox_SelectionChanged" Background="#161616" Foreground="{StaticResource LowEmpWhite}" Width="50" MaxWidth="50" Padding="5,0,0,0"/>
+                        <ToggleButton x:Name="TE_BoldTextBtn" x:FieldModifier="private" ToolTip="Bold (Ctrl + B)" Height="30" Template="{DynamicResource BoldTextToggleBtn}" Background="#FF161616" Width="30" Foreground="{StaticResource LowEmpWhite}" FontSize="7" Padding="10,5,0,0" Checked="TE_BoldTextBtn_Checked" Click="TE_BoldTextBtn_Click"/>
+                        <ToggleButton x:Name="TE_ToggleUnderlineBtn" x:FieldModifier="private" Background="#FF161616" Width="30" Height="30" Foreground="{DynamicResource LowEmpWhite}" Template="{DynamicResource ToggleUnderlineBtn}" Click="TE_ToggleUnderlineBtn_Click" Checked="TE_ToggleUnderlineBtn_Checked"/>
+                        <ToggleButton x:Name="TE_ToggleItalicBtn" x:FieldModifier="private" Background="#FF161616" Width="30" Height="30" Foreground="{DynamicResource LowEmpWhite}" Template="{DynamicResource ToggleItalicBtn}" BorderBrush="{x:Null}" FontSize="13" Padding="1,1,1,4" Click="ToggleItalicBtn_Click" Checked="TE_ToggleItalicBtn_Checked"/>
+                        <Button x:Name="TE_SaveBtn" x:FieldModifier="private" ToolTip="Manual Save (Ctrl + S)" Width="31" Template="{DynamicResource SaveFileBtn}" Padding="8,0,8,0" Height="30" Background="{x:Null}" Click="TE_SaveBtn_Click"/>
+                        <ComboBox x:Name="TE_FontSelector" IsEditable="True" x:FieldModifier="private" Foreground="{DynamicResource LowEmpWhite}" MinWidth="100" MaxWidth="150" Background="#FF161616" SelectionChanged="TE_FontSelector_SelectionChanged" Padding="5,0,0,0"/>
+                        <Button x:Name="FocusTextEditorButton" x:FieldModifier="private" Click="FocusTextEditorButton_Click" Width="40" Height="30" VerticalAlignment="Bottom"  Template="{DynamicResource DistractionFreeModeBtnTemplate}" Background="#FF161616"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+            <ScrollViewer x:Name="TextEditorScrollViewer" x:FieldModifier="private"  Grid.Row="1" Background="#31000000" MinHeight="100" Margin="0" Template="{DynamicResource DarkFlatScrollViewer}">
+                <RichTextBox x:Name="TextEditorBox" x:FieldModifier="private"  AutoWordSelection="True" Background="#00000000"  Margin="5,0,0,0" AcceptsTab="True" VerticalAlignment="Top" MinHeight="50" CaretBrush="{StaticResource HighEmpWhite}" Foreground="#DDF9F9F9" Block.LineHeight="1" BorderBrush="#fdd2b5" SnapsToDevicePixels="True" ClipToBounds="True" BorderThickness="0,0,0,0" SelectionOpacity="1" SelectionBrush="#66008BFF" Padding="0,6,-4,6" MinWidth="30" KeyDown="TextEditorBox_KeyDown" IsTabStop="False" MouseWheel="TextEditorBox_MouseWheel" UndoLimit="99" FontWeight="Normal" SelectionChanged="TextEditorBox_SelectionChanged" FontSize="14" RenderTransformOrigin="0,0" >
+                    <RichTextBox.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform x:Name="EditorBoxScaleTransform" ScaleX="1" />
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform X="0"/>
+                        </TransformGroup>
+                    </RichTextBox.RenderTransform>
+                </RichTextBox>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>
